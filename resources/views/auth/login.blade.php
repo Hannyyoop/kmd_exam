@@ -56,14 +56,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin Login</title>
     <link href="{{ asset('KMD_logo.png') }}" rel="icon">
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 <body>
     <!-- source:https://codepen.io/owaiswiz/pen/jOPvEPB -->
     <div class="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-        <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+        <div class="max-w-screen-lg m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
             <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
 
                 <div class="mt-12 flex flex-col items-center">
@@ -98,12 +98,14 @@
                                 <div class="mt-4 text-sm flex justify-between items-center container-mr">
                                     <p class="mr-3 md:mr-0 ">If you don't have an account,</p>
                                     <a href="{{ url('register') }}"
-                                        class="hover:border register text-white bg-[#002D74] hover:border-gray-400 rounded-xl py-2 px-5  hover:bg-[#002c7424] font-semibold duration-300">Register
+                                        class="hover:border-gray-400 register text-white bg-[#002D74] border-transparent border rounded-xl py-2 px-5 hover:bg-[#005BB5]  font-semibold duration-300">Register
                                         Here</a>
                                 </div>
 
+
+
                                 <button
-                                    class="mt-5 tracking-wide font-semibold bg-[#002D74] text-gray-100 w-full py-4 rounded-lg hover:bg-[#002D74] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                                    class="mt-5 tracking-wide font-semibold bg-[#002D74] text-gray-100 w-full py-4 rounded-lg hover:bg-[#005BB5] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                                     <svg class="w-6 h-6 -ml-2" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
@@ -121,11 +123,12 @@
                     </div>
                 </div>
             </div>
-            <div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
-                <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat">
+            <div class="flex-1 bg-indigo-100 text-center hidden lg:flex items-center justify-center">
+                <div class="m-12 xl:m-16 w-full flex items-center justify-center">
                     <img src="{{ asset('images/kmd.png') }}" alt="">
                 </div>
             </div>
+
         </div>
     </div>
 </body>
