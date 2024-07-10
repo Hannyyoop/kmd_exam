@@ -55,7 +55,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin Login</title>
-    <link href="{{ asset('KMD_logo.png') }}" rel="icon">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>

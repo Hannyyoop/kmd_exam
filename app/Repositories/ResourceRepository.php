@@ -18,10 +18,7 @@ class ResourceRepository implements ResourceRepositoryInterface
 
         $query = $model::latest();
 
-        // Check if the model uses the SoftDeletes trait
-        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($model))) {
-            $query->withTrashed();
-        }
+
 
         return $query; // Return the query builder instance, not the paginated result
     }
@@ -32,18 +29,18 @@ class ResourceRepository implements ResourceRepositoryInterface
     // {
     //     return $model::where('status', true)->orderBy('id')->get();
     // }
-    
-    public function selectOption($model)
-    {
-        $table = $model->getTable();
-        $columns = Schema::getColumnListing($table);
 
-        if (in_array('status', $columns)) {
-            return $model::where('status', true)->orderBy('id')->get();
-        } else {
-            return $model::orderBy('id')->get();
-        }
-    }
+    // public function selectOption($model)
+    // {
+    //     $table = $model->getTable();
+    //     $columns = Schema::getColumnListing($table);
+
+    //     if (in_array('status', $columns)) {
+    //         return $model::where('status', true)->orderBy('id')->get();
+    //     } else {
+    //         return $model::orderBy('id')->get();
+    //     }
+    // }
     public function create($model)
     {
         return new $model();
@@ -64,10 +61,10 @@ class ResourceRepository implements ResourceRepositoryInterface
     {
         return $model::findOrFail($id)->delete();
     }
-    public function changeStatus($model, $id)
-    {
-        return tap($model::findOrFail($id), function ($status) {
-            $status->update(['status' => !$status->status]);
-        });
-    }
+    // public function changeStatus($model, $id)
+    // {
+    //     return tap($model::findOrFail($id), function ($status) {
+    //         $status->update(['status' => !$status->status]);
+    //     });
+    // }
 }

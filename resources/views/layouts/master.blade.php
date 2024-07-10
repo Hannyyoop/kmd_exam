@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Exam Admin Dashboard</title>
+    <link rel="icon" href="{{ asset('images/KMD_logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -29,7 +30,7 @@
                 </div>
             </aside>
             <div class="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"></div>
-            <div id="main-content" class="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
+            <div id="main-content" class="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-72">
 
                 <main>
 
