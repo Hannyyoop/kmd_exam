@@ -19,7 +19,7 @@
                     <div class="flex space-x-2">
 
                         <button type="submit"
-                            class="btn text-white bg-[#002D74] my-3 btn-sm hover:bg-[#001F56]">Submit</button>
+                            class="btn text-white bg-[#002D74] my-3 btn-sm hover:bg-[#001F56]">Update</button>
                     </div>
 
                 </div>

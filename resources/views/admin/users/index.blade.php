@@ -14,7 +14,7 @@
                 </form> --}}
 
                 <form action="{{ route('users.index') }}" method="get" class="w-64 mx-auto">
-                    @csrf
+
                     <div class="flex">
                         <div class="relative w-full">
 

@@ -18,22 +18,24 @@ class RoleController extends Controller
 
         $query = Role::query();
 
-    // Apply search filter if keyword is present
-    if ($request->has('keyword')) {
-        $keyword = $request->keyword;
-        $query->where(function ($q) use ($keyword) {
-            $q->where("name", "ilike", "%" . $keyword . "%");
-        });
-    }
+        // Apply search filter if keyword is present
+        if ($request->has('keyword')) {
+            $keyword = $request->keyword;
+            $query->where(function ($q) use ($keyword) {
+                $q->where("name", "ilike", "%" . $keyword . "%");
+            });
+        }
 
-    // Order by latest ID
-    $query->latest('id');
+        // Order by latest ID
+        $query->latest('id');
 
-    // Paginate the results
-    $roles = $query->paginate(10);
+        // Paginate the results
+        $roles = $query->paginate(10);
 
         return view('admin.roles.index', compact('roles'));
     }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -53,9 +55,10 @@ class RoleController extends Controller
             'name' => 'required'
         ]);
         $role = Role::create(['name' => $request->name]);
-        $role->syncPermissions($request->permissions);
-        return redirect()->route('roles.index')->with('success', 'Role created successfully');
 
+        $role->syncPermissions($request->permissions);
+
+        return redirect()->route('roles.index')->with('success', 'Role created successfully');
     }
 
     /**
@@ -102,33 +105,35 @@ class RoleController extends Controller
         return redirect()->back()->with('success', 'Role deleted successfully');
     }
 
-    public function assignPermissionIndex(string $id){
+    public function assignPermissionIndex(string $id)
+    {
         $permissions = Permission::all();
         $role = Role::findOrFail($id);
         return view('admin.roles.assign-permission', compact('permissions', 'role'));
     }
 
-    public function assignPermission(Request $request){
+    public function assignPermission(Request $request)
+    {
 
         $role = Role::findOrFail($request->role_id);
 
         if (empty($request->permission_ids)) {
             $role->syncPermissions([]);
 
-             session(['error', 'No Permission Assign to the role']);
+            session(['error', 'No Permission Assign to the role']);
             return redirect()->route('roles.index');
         }
 
         $permissions = Permission::whereIn('id', $request->permission_ids)->get();
 
-        if($permissions->count() !== count($request->permission_ids)) {
+        if ($permissions->count() !== count($request->permission_ids)) {
 
-             session(['error', 'One or more permissions were not found']);
+            session(['error', 'One or more permissions were not found']);
             return redirect()->route('roles.index');
         }
 
         $role->syncPermissions($permissions);
-         session(['success', 'Permission assigned successfully']);
+        session(['success', 'Permission assigned successfully']);
         return redirect()->route('roles.index');
     }
 }

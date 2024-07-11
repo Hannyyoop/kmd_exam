@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Repositories\Interfaces;
 
-Interface ResourceRepositoryInterface
+interface ResourceRepositoryInterface
 {
     public function index($model);
     // public function selectOption($model);

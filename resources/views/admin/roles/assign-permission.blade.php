@@ -9,7 +9,7 @@
             <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
 
                 <div class="grid grid-cols-6 gap-4 mb-3">
-                    <div class="col-start-1 col-end-3 p-4 bg-white shadow-md rounded-md">
+                    <div class="col-start-1 col-end-3 p-4 bg-white rounded-md">
                         <h5 class="card-title font-bold text-black text-lg mb-2">Permission List</h5>
                         <h6 class="text-gray-800 mb-4"><span class="font-bold">Role:</span> {{ $role->name }}</h6>
                         <input type="hidden" name="role_id" value="{{ $role->id }}">

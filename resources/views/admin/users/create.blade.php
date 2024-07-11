@@ -52,7 +52,7 @@
                 </div>
                 <div class="grid justify-items-end">
                     <div class="flex space-x-2">
-                        <button type="reset" class="btn btn-active my-3 btn-sm hover:bg-gray-500">Reset</button>
+
                         <button type="submit"
                             class="btn text-white bg-[#002D74] my-3 btn-sm hover:bg-[#001F56]">Submit</button>
                     </div>
