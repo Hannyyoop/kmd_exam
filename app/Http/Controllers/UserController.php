@@ -21,11 +21,29 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $users = $this->resourceRepository->index($this->model)->paginate(10);
-        return view('admin.users.index', compact('users'));
+public function index(Request $request)
+{
+    $query = User::query();
+
+    // Apply search filter if keyword is present
+    if ($request->has('keyword')) {
+        $keyword = $request->keyword;
+        $query->where(function ($q) use ($keyword) {
+            $q->where("name", "ilike", "%" . $keyword . "%")
+              ->orWhere("email", "ilike", "%" . $keyword . "%")
+              ->orWhere("center_id", "ilike", "%" . $keyword . "%");
+        });
     }
+
+    // Order by latest ID
+    $query->latest('id');
+
+    // Paginate the results
+    $users = $query->paginate(10);
+
+
+    return view('admin.users.index', compact('users'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -33,6 +51,7 @@ class UserController extends Controller
     public function create()
     {
          $user = $this->resourceRepository->create($this->model);
+
          $centers = Center::all();
         return view('admin.users.create', compact('user','centers'));
     }
@@ -51,7 +70,7 @@ class UserController extends Controller
         ]);
 
         $data['password'] = Hash::make($request->password);
-    
+
          $this->resourceRepository->store($this->model, $data);
 
     return redirect()->route('users.index')->with('success', 'User created successfully');
@@ -81,7 +100,21 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+           $data = $request->validate([
+                'center_id' => 'required|exists:centers,id',
+                'name' => 'required|unique:users,name,' . $id,
+                'email' => 'required|email',
+                'password' => 'nullable',
+            ]);
+
+            if (!empty($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            } else {
+                unset($data['password']);
+            }
+
+            $this->resourceRepository->update($this->model, $data, $id);
+             return redirect()->route('users.index');
     }
 
     /**
@@ -89,7 +122,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+            $this->resourceRepository->destroy($this->model, $id);
+            return redirect()->back();
+
     }
 
       public function assignRoleIndex($userId)
@@ -98,6 +133,7 @@ class UserController extends Controller
         $roles = ModelsRole::all();
         return view('admin.users.assign-role', compact('user', 'roles'));
     }
+
     public function assignRole(Request $request){
          $user = User::findOrFail($request->user_id);
         $roleIds = $request->role_ids ?? [];

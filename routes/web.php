@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +26,18 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Users
     Route::resource('users', UserController::class);
 
-      ## role & permission
+      ## roleIndex & roleAssign
     Route::get('users/roles/assign/{userId}', [UserController::class, 'assignRoleIndex'])->name('users.assignRoleIndex');
     Route::post('users/roles/assign/{userId}', [UserController::class, 'assignRole'])->name('users.assignRole');
+
+    // Roles
+    Route::resource('roles', RoleController::class);
+
+    // PermissionIndex and permissionAssign
+
+    Route::get('roles/permissions/assign/{roleId}', [RoleController::class, 'assignPermissionIndex'])->name('roles.assignPermissionIndex');
+    Route::post('roles/permissions/assign/{roleId}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
+
 
 
     // Profile
