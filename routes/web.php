@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\ExamFeePaymentController;
 use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
@@ -62,6 +63,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Service Type
     Route::resource('servicetypes', ServiceTypeController::class);
+
+    // Exam Fee Payment
+    Route::resource('examfeepayments', ExamFeePaymentController::class);
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
