@@ -3,7 +3,7 @@
     <div class="px-4 py-4 sm:px-6 lg:px-8 bg-white shadow rounded-lg mb-5 mx-3">
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
-                <h1 class="text-xl font-bold leading-6 text-gray-900">Center List</h1>
+                <h1 class="text-xl font-bold leading-6 text-gray-900">Service Type List</h1>
             </div>
             <div class="mt-4 flex space-x-2 justify-end">
                 {{-- <form action="{{ url('admin/search-users') }}" method="GET">
@@ -13,11 +13,12 @@
                         placeholder="Search">
                 </form> --}}
 
-                <form action="{{ route('centers.index') }}" method="get" class="w-64 mx-auto">
+                <form action="{{ route('servicetypes.index') }}" method="get" class="w-64 mx-auto">
+
                     <div class="flex">
                         <div class="relative w-full">
 
-                            <input type="text" name="keyword"
+                            <input type="text" id="location-search" name="keyword"
                                 class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                                 placeholder="Search"
                                 @if (request()->has('keyword')) value="{{ request()->keyword }}" @endif />
@@ -35,13 +36,13 @@
                     </div>
                 </form>
 
-                <a href="{{ route('centers.create') }}"
+                <a href="{{ route('servicetypes.create') }}"
                     class="flex items-center rounded-md bg-[#002D74] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#005BB5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
-                    Add Center
+                    Add New
                 </a>
             </div>
         </div>
@@ -53,11 +54,12 @@
                             <tr>
                                 <th scope="col"
                                     class="py-3.5 pl-4 pr-4 text-left text-sm font-bold text-gray-900 sm:pl-0">#</th>
-                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Name
+                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Service
+                                    Type Name
                                 </th>
-                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Code
+                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Fee
                                 </th>
-                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Location
+                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Currency
                                 </th>
                                 <th scope="col"
                                     class="py-3.5 pl-4 pr-4 text-left text-sm font-bold text-gray-900 sm:pr-0">Action
@@ -65,25 +67,26 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white font-medium">
-                            @foreach ($centers as $center)
+                            @foreach ($servicetypes as $servicetype)
                                 <tr>
                                     <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
-                                        {{ ($centers->currentPage() - 1) * $centers->perPage() + $loop->index + 1 }}
+                                        {{ ($servicetypes->currentPage() - 1) * $servicetypes->perPage() + $loop->index + 1 }}
                                     </td>
                                     <td class="whitespace-nowrap p-4 text-sm">
-                                        {{ $center->name }}
+                                        {{ $servicetype->name }}
+                                    </td>
+                                    <td class="whitespace-nowrap p-4 text-sm">
+                                        {{ $servicetype->fee }}
+                                    </td>
+                                    <td class="whitespace-nowrap p-4 text-sm">
+                                        <span class="text-black font-semibold">
+                                            {{ $servicetype->exchangeRate->code }}
+                                        </span>
                                     </td>
 
-                                    <td class="whitespace-nowrap p-4 text-sm">
-                                        {{ $center->code }}
-                                    </td>
-
-                                    <td class="whitespace-nowrap p-4 text-sm">
-                                        {{ $center->location }}
-                                    </td>
                                     <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm sm:pr-0 flex space-x-3">
 
-                                        <a href="{{ route('centers.edit', $center->id) }}">
+                                        <a href="{{ route('servicetypes.edit', $servicetype->id) }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                                 class="w-6 h-6 text-[#002D74] flex-shrink-0 group-hover:text-gray-900 transition duration-75">
                                                 <path
@@ -94,10 +97,9 @@
                                             Edit
                                         </a>
 
-
-                                        <form action="{{ route('centers.destroy', $center->id) }}" method="post">
+                                        <form action="{{ route('servicetypes.destroy', $servicetype->id) }}" method="post">
                                             @csrf @method('delete')
-                                            <button type="submit" onclick="return confirm('Are you sure to delete this?')">
+                                            <button type="submit" class="">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-600">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -106,13 +108,14 @@
                                                 Del
                                             </button>
                                         </form>
+
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $centers->links() }}
+                        {{ $servicetypes->links() }}
                     </div>
                 </div>
             </div>

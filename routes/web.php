@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ServiceTypeController;
+use App\Http\Controllers\SubIncomeExpenseController;
 use App\Http\Controllers\UserController;
+use App\Models\ExchangeRate;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,6 +53,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Media
     Route::resource('media', MediaController::class);
+
+    // SubIncomeExpense
+    Route::resource('subincomeexpenses', SubIncomeExpenseController::class);
+
+    // Exchange Rate
+    Route::resource('exchangerates', ExchangeRateController::class);
+
+    // Service Type
+    Route::resource('servicetypes', ServiceTypeController::class);
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

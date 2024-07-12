@@ -97,7 +97,7 @@
 
                                         <form action="{{ route('roles.destroy', $role->id) }}" method="post">
                                             @csrf @method('delete')
-                                            <button type="submit" class="">
+                                            <button type="submit" onclick="return confirm('Are you sure to delete this?')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-600">
                                                     <path stroke-linecap="round" stroke-linejoin="round"

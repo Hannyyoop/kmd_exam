@@ -11,7 +11,7 @@ class ServiceType extends Model
     protected $guarded = [];
 
     public function exchangeRate(){
-        return $this->belongsTo(ExchangeRate::class)->withDefault();
+        return $this->belongsTo(ExchangeRate::class, 'exchangerate_id')->withDefault();
     }
 
     public function examFeePayments(){

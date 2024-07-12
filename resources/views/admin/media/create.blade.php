@@ -35,8 +35,7 @@
                         <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose an
                             image</label>
                         <input type="file" name="image" id="image"
-                            class="file-input file-input-bordered w-full @error('image') border-red-500 @enderror"
-                            value="{{ old('image') }}" required="" />
+                            class="file-input file-input-bordered w-full @error('image') border-red-500 @enderror" />
                         @error('image')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror

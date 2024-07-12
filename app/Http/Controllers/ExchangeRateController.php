@@ -2,38 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Center;
+use App\Models\ExchangeRate;
 use App\Repositories\Interfaces\ResourceRepositoryInterface;
 use Illuminate\Http\Request;
 
-class CenterController extends Controller
+class ExchangeRateController extends Controller
 {
     private $resourceRepository, $model;
     public function __construct(ResourceRepositoryInterface $resourceRepository)
     {
         $this->resourceRepository = $resourceRepository;
-        $this->model = Center::class;
+        $this->model = ExchangeRate::class;
     }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = Center::query();
+        $keyword = $request->input('keyword');
+        $exchangerates = ExchangeRate::where(function ($query) use ($keyword) {
+            $query->where('code', 'ilike', "%" . $keyword . "%")
+                ->orWhere('rate', 'ilike', "%" . $keyword . "%");
 
-        // Apply search filter if keyword is present
-        if ($request->has('keyword')) {
-            $keyword = $request->keyword;
-            $query->where(function ($q) use ($keyword) {
-                $q->where("name", "ilike", "%" . $keyword . "%")
-                    ->orWhere("code", "ilike", "%" . $keyword . "%")
-                    ->orWhere("location", "ilike", "%" . $keyword . "%");
-            });
-        }
-        // Paginate the results
-        $centers = $query->paginate(10);
 
-        return view('admin.centers.index', compact('centers'));
+        })->paginate(10);
+        return view('admin.exchangerates.index', compact('exchangerates'));
     }
 
     /**
@@ -41,8 +34,8 @@ class CenterController extends Controller
      */
     public function create()
     {
-        $center = $this->resourceRepository->create($this->model);
-        return view('admin.centers.create', compact('center'));
+        $exchangerate = $this->resourceRepository->create($this->model);
+        return view('admin.exchangerates.create', compact('exchangerate'));
     }
 
     /**
@@ -50,14 +43,14 @@ class CenterController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:centers,name',
+          $data = $request->validate([
             'code' => 'required',
-            'location' => 'required'
+            'rate' => 'required|numeric'
         ]);
-        $data = $request->all();
+
+
         $this->resourceRepository->store($this->model, $data);
-        return redirect()->route('centers.index');
+        return redirect()->route('exchangerates.index')->with('success', 'Exchange Rate Successfully created');
     }
 
     /**
@@ -65,7 +58,7 @@ class CenterController extends Controller
      */
     public function show(string $id)
     {
-        return abort(404);
+        //
     }
 
     /**
@@ -73,8 +66,8 @@ class CenterController extends Controller
      */
     public function edit(string $id)
     {
-        $center = $this->resourceRepository->find($this->model, $id);
-        return view('admin.centers.edit', compact('center'));
+        $exchangerate = $this->resourceRepository->find($this->model, $id);
+        return view('admin.exchangerates.edit', compact('exchangerate'));
     }
 
     /**
@@ -82,14 +75,13 @@ class CenterController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required|unique:centers,name' . $id,
+        $data = $request->validate([
             'code' => 'required',
-            'location' => 'required'
+            'rate' => 'required|numeric'
         ]);
-        $data = $request->all();
+
         $this->resourceRepository->update($this->model, $data, $id);
-        return redirect()->route('centers.index');
+        return redirect()->route('exchangerates.index')->with('success', 'Exchange Rate Successfully updated');
     }
 
     /**
@@ -98,6 +90,6 @@ class CenterController extends Controller
     public function destroy(string $id)
     {
         $this->resourceRepository->destroy($this->model, $id);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Exchange Rate Successfully deleted');
     }
 }
