@@ -60,7 +60,10 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option disabled selected="">Choose Service Type</option>
                             @foreach ($servicetypes as $servicetype)
-                                <option value="{{ $servicetype->id }}" @if ($examfeepayment->servicetype_id == $servicetype->id) selected @endif>
+                                <option value="{{ $servicetype->id }}" data-fee="{{ $servicetype->fee }}"
+                                    data-currency="{{ $servicetype->exchangeRate->code }}"
+                                    data-rate="{{ $servicetype->exchangeRate->rate }}"
+                                    @if ($examfeepayment->servicetype_id == $servicetype->id) selected @endif>
                                     {{ $servicetype->name }} ({{ $servicetype->fee }})</option>
                             @endforeach
                         </select>
@@ -103,7 +106,7 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option disabled selected>Choose Currency</option>
                                 @foreach ($currencies as $currency)
-                                    <option value="{{ $currency }}">{{ $currency }}</option>
+                                    <option value="{{ old('currency') }}">{{ $currency }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -115,7 +118,7 @@
                         <label for="total_fee" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
                             Fee(US)
                         </label>
-                        <input type="number" name="total_fee" id="name"
+                        <input type="number" name="total_fee" id="total_fee"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Total Fee" value="{{ old('total_fee') }}" readonly>
                     </div>
@@ -145,7 +148,7 @@
                         </label>
                         <input type="number" name="refund" id="refund"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('refund') border-red-500 @enderror"
-                            placeholder="Enter Refund" value="{{ old('refund') }}">
+                            placeholder="Enter Refund" value="{{ old('refund') }}" readonly>
 
                     </div>
 
@@ -161,12 +164,6 @@
 
                 </div>
 
-
-
-
-
-
-
                 <div class="grid justify-items-end">
                     <div class="flex space-x-2">
 
@@ -177,5 +174,29 @@
                 </div>
             </form>
         </div>
+
+        <script>
+            document.getElementById('servicetype').addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const currency = selectedOption.getAttribute('data-currency');
+                const fee = parseFloat(selectedOption.getAttribute('data-fee')) || 0;
+                const rate = parseFloat(selectedOption.getAttribute('data-rate')) || 1;
+
+                // Calculate total converted fee
+                const total = fee * rate;
+                document.getElementById('total_fee').value = fee;
+                document.getElementById('total').value = total;
+
+                // Update refund amount based on payment input
+                const paymentInput = document.getElementById('payment');
+                const refundInput = document.getElementById('refund');
+
+                paymentInput.addEventListener('input', function() {
+                    const payment = parseFloat(paymentInput.value);
+                    const refund = payment - total;
+                    refundInput.value = refund;
+                });
+            });
+        </script>
     </section>
 @endsection

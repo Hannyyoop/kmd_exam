@@ -62,7 +62,11 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option disabled selected="">Choose Service Type</option>
                             @foreach ($servicetypes as $servicetype)
-                                <option value="{{ $servicetype->id }}" @if ($examfeepayment->servicetype_id == $servicetype->id) selected @endif>
+                                <option value="{{ $servicetype->id }}"
+                                    data-fee="{{ $servicetype->fee }}"
+                                    data-currency="{{ $servicetype->exchangeRate->code }}"
+                                    data-rate="{{ $servicetype->exchangeRate->rate }}"
+                                    @if ($examfeepayment->servicetype_id == $servicetype->id) selected @endif>
                                     {{ $servicetype->name }} ({{ $servicetype->fee }})</option>
                             @endforeach
                         </select>
@@ -164,15 +168,7 @@
                             placeholder="Enter Remark">{{ old('remark') }}</textarea>
 
                     </div>
-
-
                 </div>
-
-
-
-
-
-
 
                 <div class="grid justify-items-end">
                     <div class="flex space-x-2">

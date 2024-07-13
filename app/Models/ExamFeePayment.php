@@ -17,4 +17,8 @@ class ExamFeePayment extends Model
     public function user(){
         return $this->belongsTo(User::class)->withDefault();
     }
+
+    public function serviceType() {
+        return $this->belongsTo(ServiceType::class)->withDefault();
+    }
 }
