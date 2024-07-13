@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('currency');
             $table->string('payment_type');
             $table->string('bank_name')->nullable();
-            $table->text('remark')->nullable();
+            $table->text('remark');
             $table->timestamps();
         });
     }

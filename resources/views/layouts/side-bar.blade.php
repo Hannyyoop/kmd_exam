@@ -26,7 +26,7 @@
     <ul class="space-y-2">
         <h2 class="space-y-2 pt-2 font-bold">User & Role</h2>
 
-        <ul>
+        <ul class="space-y-2">
 
             <li>
                 <a href="{{ route('users.index') }}"
@@ -160,7 +160,7 @@
                 </button>
                 <ul id="dropdown-example-1" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('examfeepayments.index') }}"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-blue-300 dark:text-white dark:hover:bg-gray-700">Exam
                             Fee Payment</a>
                     </li>

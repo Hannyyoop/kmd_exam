@@ -65,9 +65,6 @@
                                 <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Description
                                 </th>
 
-                                <th scope="col" class="px-4 py-3.5 text-left text-sm font-bold text-gray-900">Code
-                                </th>
-
                                 <th scope="col"
                                     class="py-3.5 pl-4 pr-4 text-left text-sm font-bold text-gray-900 sm:pr-0">Action
                                 </th>
@@ -95,10 +92,6 @@
 
                                     <td class="whitespace-nowrap p-4 text-sm">
                                         {{ Str::limit($media->description, 100) }}
-                                    </td>
-
-                                    <td class="whitespace-nowrap p-4 text-sm">
-                                        {{ $media->code }}
                                     </td>
 
                                     <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm sm:pr-0 flex space-x-3">

@@ -51,7 +51,7 @@ class MediaController extends Controller
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
     ]);
 
-    $data['code'] = rand(10000, 99999);
+    // $data['code'] = rand(10000, 99999);
 
      if ($request->hasFile('image')) {
                 $imageName = time() . '.' . $request->image->extension();
@@ -98,7 +98,7 @@ class MediaController extends Controller
 
 
          $media = Media::findOrFail($id);
-            $data['code'] = $media->code;
+            // $data['code'] = $media->code;
 
             if ($request->hasFile('image')) {
                 $imageName = time() . '.' . $request->image->extension();
