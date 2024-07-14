@@ -20,9 +20,9 @@
                         </select>
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Exam
+                        <label for="exam_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Exam
                             Date</label>
-                        <input type="date" name="exam_date" id="date"
+                        <input type="date" name="exam_date" id="exam_date"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('exam_date') border-red-500 @enderror"
                             value="{{ old('exam_date') }}" required="">
                         @error('exam_date')
@@ -31,9 +31,9 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
+                        <label for="student_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
                             Name</label>
-                        <input type="text" name="student_name" id="name"
+                        <input type="text" name="student_name" id="student_name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('student_name') border-red-500 @enderror"
                             placeholder="Enter Student Name" value="{{ old('student_name') }}" required="">
                         @error('student_name')
@@ -42,10 +42,10 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="ph_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
+                        <label for="phone_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
                             Number
                         </label>
-                        <input type="number" name="phone_no" id="ph_no"
+                        <input type="number" name="phone_no" id="phone_no"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('phone_no') border-red-500 @enderror"
                             placeholder="Enter Phone Number" value="{{ old('phone_no') }}" required="">
                         @error('phone_no')
@@ -106,7 +106,7 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option disabled selected>Choose Currency</option>
                                 @foreach ($currencies as $currency)
-                                    <option value="{{ old('currency') }}">{{ $currency }}</option>
+                                    <option value="{{ $currency }}">{{ $currency }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -200,3 +200,5 @@
         </script>
     </section>
 @endsection
+
+

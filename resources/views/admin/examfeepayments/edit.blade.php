@@ -20,9 +20,9 @@
                         </select>
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Exam
+                        <label for="exam_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Exam
                             Date</label>
-                        <input type="date" name="exam_date" id="date"
+                        <input type="date" name="exam_date" id="exam_date"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('exam_date') border-red-500 @enderror"
                             value="{{ old('exam_date', $examfeepayment->exam_date) }}" required="">
                         @error('exam_date')
@@ -31,9 +31,10 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
+                        <label for="student_name"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
                             Name</label>
-                        <input type="text" name="student_name" id="name"
+                        <input type="text" name="student_name" id="student_name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('student_name') border-red-500 @enderror"
                             placeholder="Enter Student Name"
                             value="{{ old('student_name', $examfeepayment->student_name) }}" required="">
@@ -43,10 +44,10 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="ph_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
+                        <label for="phone_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
                             Number
                         </label>
-                        <input type="number" name="phone_no" id="ph_no"
+                        <input type="number" name="phone_no" id="phone_no"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('phone_no') border-red-500 @enderror"
                             placeholder="Enter Phone Number" value="{{ old('phone_no', $examfeepayment->phone_no) }}"
                             required="">
@@ -62,8 +63,7 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option disabled selected="">Choose Service Type</option>
                             @foreach ($servicetypes as $servicetype)
-                                <option value="{{ $servicetype->id }}"
-                                    data-fee="{{ $servicetype->fee }}"
+                                <option value="{{ $servicetype->id }}" data-fee="{{ $servicetype->fee }}"
                                     data-currency="{{ $servicetype->exchangeRate->code }}"
                                     data-rate="{{ $servicetype->exchangeRate->rate }}"
                                     @if ($examfeepayment->servicetype_id == $servicetype->id) selected @endif>
@@ -87,10 +87,12 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option disabled selected="">Choose Payment Type</option>
                             <option value="Cash"
-                                {{ (old('payment_type') ?? $examfeepayment->currency) == 'Cash' ? 'selected' : '' }}>Cash
+                                {{ (old('payment_type') ?? $examfeepayment->payment_type) == 'Cash' ? 'selected' : '' }}>
+                                Cash
                             </option>
                             <option value="Bank"
-                                {{ (old('payment_type') ?? $examfeepayment->currency) == 'Bank' ? 'selected' : '' }}>Bank
+                                {{ (old('payment_type') ?? $examfeepayment->payment_type) == 'Bank' ? 'selected' : '' }}>
+                                Bank
                             </option>
                         </select>
                     </div>
@@ -101,7 +103,7 @@
                                 Name</label>
                             <input type="text" name="bank_name" id="bank_name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter Bank Name" value="{{ old('bank_name') }}">
+                                placeholder="Enter Bank Name" value="{{ old('bank_name', $examfeepayment->bank_name) }}">
                         </div>
 
                         <div class="w-full md:w-1/2 px-2">
@@ -126,9 +128,9 @@
                         <label for="total_fee" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
                             Fee(US)
                         </label>
-                        <input type="number" name="total_fee" id="name"
+                        <input type="number" name="total_fee" id="total_fee"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Total Fee" value="{{ old('total_fee') }}" readonly>
+                            placeholder="Total Fee" value="{{ old('total_fee', $examfeepayment->total_fee) }}" readonly>
                     </div>
 
                     <div class="w-full">
@@ -137,7 +139,7 @@
                         </label>
                         <input type="number" name="total" id="total"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Total" value="{{ old('total') }}" readonly>
+                            placeholder="Total" value="{{ old('total', $examfeepayment->total) }}" readonly>
                     </div>
 
                     <div class="w-full">
@@ -145,7 +147,8 @@
                         </label>
                         <input type="number" name="payment" id="payment"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('payment') border-red-500 @enderror"
-                            placeholder="Enter Payment" value="{{ old('payment') }}" required="">
+                            placeholder="Enter Payment" value="{{ old('payment', $examfeepayment->payment) }}"
+                            required="">
                         @error('payment')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -156,7 +159,7 @@
                         </label>
                         <input type="number" name="refund" id="refund"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('refund') border-red-500 @enderror"
-                            placeholder="Enter Refund" value="{{ old('refund') }}">
+                            placeholder="Enter Refund" value="{{ old('refund', $examfeepayment->refund) }}">
 
                     </div>
 
@@ -165,7 +168,7 @@
                             Name</label>
                         <textarea type="text" name="remark" id="remark" cols="30"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Enter Remark">{{ old('remark') }}</textarea>
+                            placeholder="Enter Remark">{{ old('remark', $examfeepayment->remark) }}</textarea>
 
                     </div>
                 </div>
@@ -174,11 +177,47 @@
                     <div class="flex space-x-2">
 
                         <button type="submit"
-                            class="btn text-white bg-[#002D74] my-3 btn-sm hover:bg-[#001F56]">Submit</button>
+                            class="btn text-white bg-[#002D74] my-3 btn-sm hover:bg-[#001F56]">Update</button>
                     </div>
 
                 </div>
             </form>
         </div>
+
+
+
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceTypeSelect = document.getElementById('servicetype');
+            const paymentInput = document.getElementById('payment');
+            const refundInput = document.getElementById('refund');
+            const totalFeeInput = document.getElementById('total_fee');
+            const totalInput = document.getElementById('total');
+
+            function updateFeeAndRefund() {
+                const selectedOption = serviceTypeSelect.options[serviceTypeSelect.selectedIndex];
+                const fee = parseFloat(selectedOption.getAttribute('data-fee')) || 0;
+                const rate = parseFloat(selectedOption.getAttribute('data-rate')) || 1;
+                const total = fee * rate;
+
+                totalFeeInput.value = fee;
+                totalInput.value = total;
+                updateRefund();
+            }
+
+            function updateRefund() {
+                const payment = parseFloat(paymentInput.value) || 0;
+                const total = parseFloat(totalInput.value) || 0;
+                const refund = payment - total;
+                refundInput.value = refund;
+            }
+
+            serviceTypeSelect.addEventListener('change', updateFeeAndRefund);
+            paymentInput.addEventListener('input', updateRefund);
+
+            // Trigger initial calculation on page load
+            updateFeeAndRefund();
+        });
+    </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Center;
 use App\Models\ExamFeePayment;
 use App\Models\ExchangeRate;
 use App\Models\ServiceType;
+use App\Models\User;
 use App\Repositories\Interfaces\ResourceRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,26 +45,23 @@ class ExamFeePaymentController extends Controller
     public function create()
     {
         $centers = Center::all();
-
-        // Retrieve all service types with their associated exchange rates
         $servicetypes = ServiceType::with('exchangeRate')->get();
-
-        // Collect the unique currencies from the service types' exchange rates
         $currencies = ExchangeRate::pluck('code')->unique();
-
         $examfeepayment = $this->resourceRepository->create($this->model);
+
         return view('admin.examfeepayments.create', compact('centers', 'servicetypes', 'currencies', 'examfeepayment'));
     }
-
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+
+
         // Validate request data
         $data = $request->validate([
-            'serviceType_id' => 'required|exists:service_types,id',
+            'servicetype_id' => 'required|exists:service_types,id',
             'center_id' => 'required|exists:centers,id',
             'exam_date' => 'required|date',
             'student_name' => 'required|string|max:255',
@@ -72,10 +70,10 @@ class ExamFeePaymentController extends Controller
             'total' => 'required|numeric|min:0',
             'payment' => 'required|numeric|min:0',
             'refund' => 'required|numeric|min:0',
-            'currency' => 'required|string|in:KS,US',
+            'currency' => 'required',
             'payment_type' => 'required|string|max:50',
             'bank_name' => 'nullable|string|max:255',
-            'remark' => 'required|string|max:255',
+            'remark' => 'nullable|string|max:255',
         ]);
 
         // Add additional fields
@@ -83,7 +81,7 @@ class ExamFeePaymentController extends Controller
         $data['date'] = now();
 
         // Retrieve service type and exchange rate
-        $servicetype = ServiceType::with('exchangeRate')->findOrFail($data['serviceType_id']);
+        $servicetype = ServiceType::with('exchangeRate')->findOrFail($data['servicetype_id']);
         $exchangeRate = $servicetype->exchangeRate->rate;
 
         // Calculate total and refund
@@ -92,7 +90,7 @@ class ExamFeePaymentController extends Controller
         $data['refund'] = $data['payment'] - $data['total'];
 
         // Ensure the currency is set based on the exchange rate's code
-        $data['currency'] = $servicetype->exchangeRate->code;
+        // $data['currency'] = $servicetype->exchangeRate->code;
 
         // Retrieve center and generate voucher number
         $center = Center::findOrFail($data['center_id']);
@@ -116,7 +114,8 @@ class ExamFeePaymentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $examfeepayment = $this->resourceRepository->find($this->model, $id);
+        return view('admin.examfeepayments.print', compact('examfeepayment'));
     }
 
     /**
@@ -124,7 +123,13 @@ class ExamFeePaymentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $users = User::all();
+        $centers = Center::all();
+        $servicetypes = ServiceType::with('exchangeRate')->get();
+        $currencies = ExchangeRate::pluck('code')->unique();
+        $examfeepayment = $this->resourceRepository->find($this->model, $id);
+
+        return view('admin.examfeepayments.edit', compact('users', 'centers', 'servicetypes', 'currencies', 'examfeepayment'));
     }
 
     /**
@@ -132,7 +137,41 @@ class ExamFeePaymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->validate([
+            'servicetype_id' => 'required|exists:service_types,id',
+            'center_id' => 'required|exists:centers,id',
+            'exam_date' => 'required|date',
+            'student_name' => 'required|string|max:255',
+            'phone_no' => 'required|string|max:20',
+            'total_fee' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
+            'payment' => 'required|numeric|min:0',
+            'refund' => 'required|numeric|min:0',
+            'currency' => 'required',
+            'payment_type' => 'required|string|max:50',
+            'bank_name' => 'nullable|string|max:255',
+            'remark' => 'nullable|string|max:255',
+        ]);
+        // Retrieve the existing record by ID
+        $examfeepayment = ExamFeePayment::findOrFail($id);
+
+        // Retrieve service type and exchange rate
+        $servicetype = ServiceType::with('exchangeRate')->findOrFail($data['servicetype_id']);
+        $exchangeRate = $servicetype->exchangeRate->rate;
+
+        // Calculate total and refund
+        $data['exchange_rate'] = $exchangeRate;
+        $data['total'] = $data['total_fee'] * $exchangeRate;
+        $data['refund'] = $data['payment'] - $data['total'];
+
+        // Ensure the currency is set based on the exchange rate's code
+        $data['currency'] = $servicetype->exchangeRate->code;
+
+        // Update the existing record
+        $this->resourceRepository->update($this->model, $data, $id);
+
+        // Redirect with success message
+        return redirect()->route('examfeepayments.index')->with('success', 'Record updated successfully.');
     }
 
     /**
@@ -140,6 +179,7 @@ class ExamFeePaymentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->resourceRepository->destroy($this->model, $id);
+        return redirect()->back();
     }
 }

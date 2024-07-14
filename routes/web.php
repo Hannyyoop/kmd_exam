@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\ExamFeePaymentController;
+use App\Http\Controllers\ExamPaymentReportController;
 use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
@@ -66,6 +67,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Exam Fee Payment
     Route::resource('examfeepayments', ExamFeePaymentController::class);
+
+    // Payment Report
+    Route::get('reports', [ExamPaymentReportController::class, 'index'])->name('reports.index');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

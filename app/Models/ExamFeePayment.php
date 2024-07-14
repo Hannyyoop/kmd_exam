@@ -7,18 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExamFeePayment extends Model
 {
-     use HasFactory;
+    use HasFactory;
     protected $guarded = [];
 
-    public function center(){
+    public function center()
+    {
         return $this->belongsTo(Center::class)->withDefault();
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class)->withDefault();
     }
 
-    public function serviceType() {
-        return $this->belongsTo(ServiceType::class)->withDefault();
+    public function serviceType()
+    {
+        return $this->belongsTo(ServiceType::class, 'servicetype_id')->withDefault();
     }
 }

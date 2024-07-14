@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('center_id')->constrained()->onDelete('cascade');
             $table->string('voucher_no');
             $table->date('exam_date');
+            $table->date('date');
             $table->string('student_name');
             $table->string('phone_no');
             $table->integer('total_fee');
