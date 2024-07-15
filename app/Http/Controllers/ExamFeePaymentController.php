@@ -24,8 +24,10 @@ class ExamFeePaymentController extends Controller
      */
     public function index()
     {
+
+        $userCenterId = Auth::user()->center_id;
         $examFeePaymentsQuery = $this->resourceRepository->index($this->model);
-        $examfeepayments = $examFeePaymentsQuery->paginate(20);
+        $examfeepayments = $examFeePaymentsQuery->where('center_id', $userCenterId)->paginate(20);
 
         return view('admin.examfeepayments.index', compact('examfeepayments'));
     }
@@ -44,12 +46,13 @@ class ExamFeePaymentController extends Controller
 
     public function create()
     {
+        $users = User::all();
         $centers = Center::all();
         $servicetypes = ServiceType::with('exchangeRate')->get();
         $currencies = ExchangeRate::pluck('code')->unique();
         $examfeepayment = $this->resourceRepository->create($this->model);
 
-        return view('admin.examfeepayments.create', compact('centers', 'servicetypes', 'currencies', 'examfeepayment'));
+        return view('admin.examfeepayments.create', compact('users', 'centers', 'servicetypes', 'currencies', 'examfeepayment'));
     }
 
     /**
@@ -90,7 +93,7 @@ class ExamFeePaymentController extends Controller
         $data['refund'] = $data['payment'] - $data['total'];
 
         // Ensure the currency is set based on the exchange rate's code
-        // $data['currency'] = $servicetype->exchangeRate->code;
+        $data['currency'] = $servicetype->exchangeRate->code;
 
         // Retrieve center and generate voucher number
         $center = Center::findOrFail($data['center_id']);

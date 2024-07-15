@@ -148,7 +148,7 @@
             <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
-                    aria-controls="dropdown-example-2" data-collapse-toggle="dropdown-example-2">
+                    aria-controls="dropdown-example-1" data-collapse-toggle="dropdown-example-1">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -163,7 +163,7 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="dropdown-example-2" class="hidden py-2 space-y-2">
+                <ul id="dropdown-example-1" class="hidden py-2 space-y-2">
                     <li>
                         <a href="{{ route('examfeepayments.index') }}"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group {{ $currentRoute === 'examfeepayments.index' ? 'bg-[#1769B5] text-white' : 'text-gray-900 dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700' }}">Exam
@@ -194,7 +194,7 @@
                 <ul id="dropdown-example-3" class="hidden py-2 space-y-2">
                     <li>
                         <a href="{{ route('reports.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group {{ $currentRoute === 'examfeepayments.index' ? 'bg-[#1769B5] text-white' : 'text-gray-900 dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700' }}">Exam
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group {{ $currentRoute === 'reports.index' ? 'bg-[#1769B5] text-white' : 'text-gray-900 dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700' }}">Exam
                             Fee Payment Report</a>
                     </li>
 
@@ -204,3 +204,24 @@
     </ul>
 
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dropdownToggle1 = document.querySelector('[data-collapse-toggle="dropdown-example"]');
+        const dropdownMenu = document.getElementById('dropdown-example-3');
+
+        dropdownToggle.addEventListener('click', function() {
+            if (dropdownMenu.classList.contains('hidden')) {
+                dropdownMenu.classList.remove('hidden');
+            } else {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Ensure the dropdown remains open if a link inside it is clicked
+        const dropdownLink = dropdownMenu.querySelector('ul');
+        dropdownLink.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent the dropdown from closing
+            dropdownMenu.classList.remove('hidden');
+        });
+    });
+</script>

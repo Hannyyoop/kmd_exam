@@ -70,6 +70,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Payment Report
     Route::get('reports', [ExamPaymentReportController::class, 'index'])->name('reports.index');
+    Route::get('export', [ExamPaymentReportController::class, 'exportExamFeePayments'])->name('reports.export');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

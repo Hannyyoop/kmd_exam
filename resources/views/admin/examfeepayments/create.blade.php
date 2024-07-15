@@ -31,7 +31,8 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="student_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
+                        <label for="student_name"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
                             Name</label>
                         <input type="text" name="student_name" id="student_name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('student_name') border-red-500 @enderror"
@@ -175,6 +176,38 @@
             </form>
         </div>
 
+        {{-- <script>
+            document.getElementById('servicetype').addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const currency = selectedOption.getAttribute('data-currency');
+                const fee = parseFloat(selectedOption.getAttribute('data-fee')) || 0;
+                const rate = parseFloat(selectedOption.getAttribute('data-rate')) || 1;
+
+                // Calculate total converted fee
+                const total = fee * rate;
+                document.getElementById('total_fee').value = fee;
+                document.getElementById('total').value = total;
+
+                // Currency select
+                const currencySelect = document.getElementById('currency');
+                for (let i = 0; i < currencySelect.options.length; i++) {
+                    if (currencySelect.options[i].value === currency) {
+                        currencySelect.selectedIndex = i;
+                        break;
+                    }
+                }
+                // Update refund amount based on payment input
+                const paymentInput = document.getElementById('payment');
+                const refundInput = document.getElementById('refund');
+
+                paymentInput.addEventListener('input', function() {
+                    const payment = parseFloat(paymentInput.value);
+                    const refund = payment - total;
+                    refundInput.value = refund;
+                });
+            });
+        </script> --}}
+
         <script>
             document.getElementById('servicetype').addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
@@ -187,6 +220,14 @@
                 document.getElementById('total_fee').value = fee;
                 document.getElementById('total').value = total;
 
+                // Currency select
+                const currencySelect = document.getElementById('currency');
+                for (let i = 0; i < currencySelect.options.length; i++) {
+                    if (currencySelect.options[i].value === currency) {
+                        currencySelect.selectedIndex = i;
+                        break;
+                    }
+                }
                 // Update refund amount based on payment input
                 const paymentInput = document.getElementById('payment');
                 const refundInput = document.getElementById('refund');
@@ -200,5 +241,3 @@
         </script>
     </section>
 @endsection
-
-
