@@ -3,17 +3,11 @@
     <div class="px-4 py-4 sm:px-6 lg:px-8 bg-white shadow rounded-lg mb-5 mx-3">
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
-                <h1 class="text-xl font-bold leading-6 text-gray-900">Exam Fee Payment List</h1>
+                <h1 class="text-xl font-bold leading-6 text-gray-900">Exam Fee Payment Report List</h1>
             </div>
             <div class="mt-4 flex space-x-2 justify-end">
-                {{-- <form action="{{ url('admin/search-users') }}" method="GET">
-                    @csrf
-                    <input type="text" name="search" id="search"
-                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-dark-600 sm:text-sm sm:leading-6"
-                        placeholder="Search">
-                </form> --}}
 
-                <form action="{{ route('examfeepayments.index') }}" method="get" class="w-64 mx-auto">
+                <form action="{{ route('reports.index') }}" method="get" class="w-64 mx-auto">
                     <div class="flex">
                         <div class="relative w-full">
 
@@ -112,7 +106,7 @@
 
 
                                         <td class="whitespace-nowrap p-4 text-sm">
-                                            {{ number_format($examfeepayment->total)." MMK" }}
+                                            {{ number_format($examfeepayment->total) . ' MMK' }}
                                         </td>
 
 

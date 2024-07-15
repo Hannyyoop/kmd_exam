@@ -22,14 +22,38 @@ class ExamFeePaymentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $userCenterId = Auth::user()->center_id;
         $examFeePaymentsQuery = $this->resourceRepository->index($this->model);
-        $examfeepayments = $examFeePaymentsQuery->where('center_id', $userCenterId)->paginate(20);
+
+        // Filter by center_id
+        $examFeePaymentsQuery = $examFeePaymentsQuery->where('center_id', $userCenterId);
+
+        // Check if there's a keyword for search
+        if ($request->has('keyword')) {
+            $keyword = $request->input('keyword');
+            $examFeePaymentsQuery = $examFeePaymentsQuery->where(function ($query) use ($keyword) {
+                $query->where('voucher_no', 'ilike', "%" . $keyword . "%")
+                    ->orWhere('student_name', 'ilike', "%" . $keyword . "%")
+                    ->orWhere('remark', 'ilike', "%" . $keyword . "%")
+                    ->orWhereHas('serviceType', function ($q) use ($keyword) {
+                        $q->where('name', 'ilike', "%" . $keyword . "%");
+                    });
+            });
+        }
+
+        // Paginate the results
+        $examfeepayments = $examFeePaymentsQuery->paginate(20);
 
         return view('admin.examfeepayments.index', compact('examfeepayments'));
+    }
+
+    public function search(Request $request)
+    {
+        // Adjust pagination as needed
+
+        return redirect()->route('examfeepayments.search', compact('examfeepayment'));
     }
 
 
