@@ -94,6 +94,7 @@ class MediaController extends Controller
             'title' => 'required|unique:media,title,' . $id . '|min:5|max:100',
             'description' => 'required|min:10',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'code' => 'nullable'
         ]);
 
 

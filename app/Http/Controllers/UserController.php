@@ -66,7 +66,7 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required|unique:users,name',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required',
+            'password' => 'nullable',
             'center_id' => 'required|exists:centers,id',
         ]);
 
@@ -99,24 +99,27 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $data = $request->validate([
-            'center_id' => 'required|exists:centers,id',
-            'name' => 'required|unique:users,name,' . $id,
-            'email' => 'required|email',
-            'password' => 'nullable',
-        ]);
+public function update(Request $request, string $id)
+{
+    $data = $request->validate([
+        'center_id' => 'required|exists:centers,id',
+        'name' => 'required|unique:users,name,' . $id,
+        'email' => 'required|email',
+        'password' => 'nullable',
+    ]);
 
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-        $this->resourceRepository->update($this->model, $data, $id);
-        return redirect()->route('users.index');
+    if (!empty($data['password'])) {
+        $data['password'] = Hash::make($data['password']);
+    } else {
+        // Fetch the existing user data
+        $existingUser = $this->resourceRepository->find($this->model, $id);
+        // Keep the existing password
+        $data['password'] = $existingUser->password;
     }
+
+    $this->resourceRepository->update($this->model, $data, $id);
+    return redirect()->route('users.index');
+}
 
     /**
      * Remove the specified resource from storage.

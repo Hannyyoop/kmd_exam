@@ -49,6 +49,7 @@ class ExamPaymentReportController extends Controller
             ->join('centers', 'exam_fee_payments.center_id', '=', 'centers.id')
             ->join('service_types', 'exam_fee_payments.servicetype_id', '=', 'service_types.id')
             ->select(
+                'exam_fee_payments.id as ID',
                 'exam_fee_payments.voucher_no as Voucher No.',
                 'exam_fee_payments.exam_date as Payment Date',
                 'exam_fee_payments.student_name as Student Name',

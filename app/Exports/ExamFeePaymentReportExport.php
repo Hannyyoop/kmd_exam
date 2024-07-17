@@ -27,6 +27,7 @@ class ExamFeePaymentReportExport implements FromArray, WithHeadings
     public function headings(): array
     {
         return [
+            'ID',
             'Voucher No',
             'Payment Date',
             'Student Name',
